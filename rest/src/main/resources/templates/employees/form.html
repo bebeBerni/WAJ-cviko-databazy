@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${employee.id != null} ? 'Úprava zamestnanca' : 'Nový zamestnanec'"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site-header">
+    <nav class="nav-shell" aria-label="Hlavná navigácia">
+        <a class="brand" th:href="@{/employees}"><span class="brand-mark" aria-hidden="true">E</span> Evidencia zamestnancov</a>
+        <span class="nav-label">Správa tímu</span>
+    </nav>
+</header>
+<main class="form-page">
+    <a class="back-link" th:href="@{/employees}">← Späť na zoznam</a>
+    <p class="eyebrow">EVIDENCIA ZAMESTNANCOV</p>
+    <h1 th:text="${employee.id != null} ? 'Upraviť zamestnanca' : 'Pridať zamestnanca'"></h1>
+    <p class="subtitle">Vyplňte osobné a pracovné údaje zamestnanca.</p>
+    <form th:action="${employee.id != null} ? @{/employees/{id}(id=${employee.id})} : @{/employees}"
+          th:object="${employee}" method="post">
+        <p class="error" th:if="${#fields.hasErrors('*')}">Skontrolujte údaje vo formulári.</p>
+
+        <div class="form-grid">
+            <div class="form-field">
+                <label for="firstName">Meno</label>
+                <input type="text" autocomplete="given-name" placeholder="napr. Jana" th:field="*{firstName}" maxlength="100" required>
+                <p class="error" th:errors="*{firstName}"></p>
+            </div>
+            <div class="form-field">
+                <label for="lastName">Priezvisko</label>
+                <input type="text" autocomplete="family-name" placeholder="napr. Nováková" th:field="*{lastName}" maxlength="100" required>
+                <p class="error" th:errors="*{lastName}"></p>
+            </div>
+            <div class="form-field">
+                <label for="birthDate">Dátum narodenia</label>
+                <input type="date" th:field="*{birthDate}" required>
+                <p class="error" th:errors="*{birthDate}"></p>
+            </div>
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input placeholder="meno@firma.sk" autocomplete="email" type="email" th:field="*{email}" maxlength="254" required>
+                <p class="error" th:errors="*{email}"></p>
+            </div>
+            <div class="form-field">
+                <label for="phone">Telefón</label>
+                <input placeholder="+421 900 123 456" autocomplete="tel" type="tel" th:field="*{phone}" maxlength="25" required>
+                <p class="error" th:errors="*{phone}"></p>
+            </div>
+            <div class="form-field">
+                <label for="jobTitle">Pracovná pozícia</label>
+                <select th:field="*{jobTitle}" required>
+                    <option value="">Vyberte pracovnú pozíciu</option>
+                    <option th:each="jobTitle : ${jobTitles}" th:value="${jobTitle}" th:text="${jobTitle}"></option>
+                </select>
+                <p class="error" th:errors="*{jobTitle}"></p>
+            </div>
+            <div class="form-field">
+                <label for="salary">Plat (€)</label>
+                <input type="number" th:field="*{salary}" min="0" max="2147483647" step="1" required>
+                <p class="error" th:errors="*{salary}"></p>
+            </div>
+        </div>
+
+        <fieldset class="employment-options">
+            <legend>Typ úväzku</legend>
+            <label class="radio-option" th:each="option : ${fullTimeOptions}">
+                <input type="radio" th:field="*{fullTime}" th:value="${option}" required>
+                <span th:text="${option}"></span>
+            </label>
+            <p class="error" th:errors="*{fullTime}"></p>
+        </fieldset>
+
+        <div class="actions form-footer">
+            <a th:href="@{/employees}">Späť na zoznam</a>
+            <button type="submit" th:text="${employee.id != null} ? 'Uložiť zmeny' : 'Pridať zamestnanca'"></button>
+        </div>
+    </form>
+</main>
+</body>
+</html>

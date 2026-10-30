@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chyba</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site-header">
+    <nav class="nav-shell" aria-label="Hlavná navigácia">
+        <a class="brand" th:href="@{/employees}"><span class="brand-mark" aria-hidden="true">E</span> Evidencia zamestnancov</a>
+        <span class="nav-label">Správa tímu</span>
+    </nav>
+</header>
+<main class="error-page">
+    <p class="eyebrow">NIEČO SA NEPODARILO</p>
+    <h1 th:text="|Chyba ${status}|">Chyba</h1>
+    <p th:text="${status == 404} ? 'Požadovaný zamestnanec alebo stránka neexistuje.' : 'Požiadavku sa nepodarilo spracovať.'"></p>
+    <a th:href="@{/employees}">Späť na zoznam zamestnancov</a>
+</main>
+</body>
+</html>

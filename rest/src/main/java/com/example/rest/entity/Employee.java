@@ -3,7 +3,8 @@ package com.example.rest.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "employee")
@@ -34,7 +35,8 @@ public class Employee {
     @Column(name = "birth_date")
     @NotNull(message = "Dátum narodenia je povinný.")
     @Past(message = "Dátum narodenia musí byť v minulosti.")
-    private Date birthDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate birthDate;
 
     @Column(name = "email")
     @NotBlank(message = "Email je povinný.")
@@ -60,8 +62,9 @@ public class Employee {
     private Integer salary;
 
     @Column(name = "full_time")
-    @NotNull(message = "Údaj o plnom úväzku je povinný.")
-    private Boolean fullTime;
+    @NotBlank(message = "Typ úväzku je povinný.")
+    @Size(max = 30, message = "Typ úväzku môže mať najviac 30 znakov.")
+    private String fullTime;
 
     public Integer getId() {
         return id;
@@ -87,11 +90,11 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -127,11 +130,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Boolean isFullTime() {
+    public String getFullTime() {
         return fullTime;
     }
 
-    public void setFullTime(Boolean fullTime) {
+    public void setFullTime(String fullTime) {
         this.fullTime = fullTime;
     }
 }

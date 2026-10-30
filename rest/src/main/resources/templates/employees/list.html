@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Zamestnanci</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site-header">
+    <nav class="nav-shell" aria-label="Hlavná navigácia">
+        <a class="brand" th:href="@{/employees}"><span class="brand-mark" aria-hidden="true">E</span> Evidencia zamestnancov</a>
+        <span class="nav-label">Správa tímu</span>
+    </nav>
+</header>
+<main>
+    <div class="page-heading">
+        <div>
+            <p class="eyebrow">VÁŠ TÍM NA JEDNOM MIESTE</p>
+            <h1>Adresár zamestnancov</h1>
+            <p class="subtitle">Prehľad ľudí, pracovných pozícií a úväzkov.</p>
+        </div>
+        <a class="button" th:href="@{/employees/create}"><span aria-hidden="true">＋</span> Pridať zamestnanca</a>
+    </div>
+    <div class="section-heading">
+        <h2>Zamestnanci <span class="count" th:text="${#lists.size(employees)}">0</span></h2>
+        <span class="muted">Zoznam zamestnancov</span>
+    </div>
+    <p class="empty-state" th:if="${#lists.isEmpty(employees)}">Zatiaľ nebol pridaný žiadny zamestnanec.</p>
+    <div class="table-wrapper" th:unless="${#lists.isEmpty(employees)}">
+        <table>
+            <thead><tr><th>ID</th><th>Meno</th><th>Priezvisko</th><th>Email</th><th>Pozícia</th><th>Úväzok</th><th>Akcia</th></tr></thead>
+            <tbody>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.id}"></td>
+                <td th:text="${employee.firstName}"></td>
+                <td th:text="${employee.lastName}"></td>
+                <td th:text="${employee.email}"></td>
+                <td th:text="${employee.jobTitle}"></td>
+                <td><span class="badge" th:text="${employee.fullTime}"></span></td>
+                <td><div class="actions row-actions">
+                    <a th:href="@{/employees/{id}(id=${employee.id})}">Detail</a>
+                    <a th:href="@{/employees/{id}/edit(id=${employee.id})}">Upraviť</a>
+                    <form th:action="@{/employees/{id}/delete(id=${employee.id})}" method="post"
+                          onsubmit="return confirm('Naozaj chcete odstrániť tohto zamestnanca?');">
+                        <button class="danger" type="submit">Odstrániť</button>
+                    </form>
+                </div></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
